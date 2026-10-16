@@ -9,3 +9,4 @@ Every use of an AI tool on this project is recorded here. The last column is fil
 | 2026-10-16 | Claude Code | Phase 2: receipt parser with tests | `ReceiptParser` (amount regex, total, merchant and date rules) and `ReceiptParserTests` | |
 | 2026-10-16 | Claude Code | Phase 3: on-device text recognition | `UIImage+Resize`, `ReceiptScanner` (Vision `VNRecognizeTextRequest`), `ReceiptScannerTests` | |
 | 2026-10-16 | Claude Code | Phase 4: theme and shared components | `Theme`, `CardStyle` (custom ViewModifier), `CategoryBadge`, `ExpenseRow`, `ScanLineOverlay` (custom animation) | |
+| 2026-10-16 | Claude Code | Phase 5: home, list and expense form | `BillfoldApp`, `RootTabView`, `HomeView`, `SummaryCard` (swipe gesture, numeric transition), `ExpenseListView`, `ExpenseFormView`, `SampleData` | |
