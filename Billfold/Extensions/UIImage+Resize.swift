@@ -8,7 +8,8 @@ extension UIImage {
     /// Scales the image so its longest side is at most `maxDimension` pixels.
     /// Never makes an image bigger. Redrawing bakes the orientation into the pixels,
     /// so Vision reads portrait phone photos the right way up.
-    func resized(maxDimension: CGFloat) -> UIImage {
+    /// `nonisolated` because the scan flow calls this from a background task.
+    nonisolated func resized(maxDimension: CGFloat) -> UIImage {
         let longestSide = max(size.width, size.height)
         let ratio = longestSide > maxDimension ? maxDimension / longestSide : 1
         let newSize = CGSize(width: (size.width * ratio).rounded(),
@@ -23,7 +24,7 @@ extension UIImage {
     }
 
     /// JPEG at 60% quality: much smaller on disk and still easy to read.
-    func compressedData() -> Data? {
+    nonisolated func compressedData() -> Data? {
         jpegData(compressionQuality: 0.6)
     }
 }
