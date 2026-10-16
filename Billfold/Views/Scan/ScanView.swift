@@ -7,7 +7,6 @@ import PhotosUI
 
 struct ScanView: View {
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("currencyCode") private var currencyCode = "LKR"
     @ScaledMetric private var iconSize: CGFloat = 72
 
     @State private var viewModel = ScanViewModel()
@@ -61,7 +60,7 @@ struct ScanView: View {
 
         case .result(let parsed):
             receiptImage(maxHeight: 200, scanning: false)
-            resultCard(parsed)
+            ScanResultCard(parsed: parsed)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
             NavigationLink {
                 ExpenseFormView(draft: viewModel.draft ?? ExpenseDraft(), onFinish: { dismiss() })
@@ -125,28 +124,5 @@ struct ScanView: View {
         } else {
             ProgressView().padding(40)
         }
-    }
-
-    private func resultCard(_ parsed: ParsedReceipt) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Found on Receipt").font(.headline)
-            resultRow("Merchant", value: parsed.merchant)
-            resultRow("Total", value: parsed.total?.asCurrency(code: currencyCode))
-            resultRow("Date", value: parsed.date?.formatted(date: .abbreviated, time: .omitted))
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .card()
-    }
-
-    private func resultRow(_ label: String, value: String?) -> some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text(label).foregroundStyle(.secondary)
-            Spacer()
-            Text(value ?? "Not found")
-                .fontWeight(value == nil ? .regular : .semibold)
-                .foregroundStyle(value == nil ? Color.secondary : Color.primary)
-                .multilineTextAlignment(.trailing)
-        }
-        .accessibilityElement(children: .combine)
     }
 }

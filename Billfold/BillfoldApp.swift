@@ -20,6 +20,8 @@ struct BillfoldApp: App {
         }
         if inMemory {
             SampleData.insert(into: container.mainContext)
+            // Start every UI test in the default currency, whatever an earlier run chose.
+            UserDefaults.standard.removeObject(forKey: "currencyCode")
         }
     }
 

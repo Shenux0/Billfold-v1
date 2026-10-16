@@ -12,3 +12,4 @@ Every use of an AI tool on this project is recorded here. The last column is fil
 | 2026-10-16 | Claude Code | Phase 5: home, list and expense form | `BillfoldApp`, `RootTabView`, `HomeView`, `SummaryCard` (swipe gesture, numeric transition), `ExpenseListView`, `ExpenseFormView`, `SampleData` | |
 | 2026-10-16 | Claude Code | Phase 6: receipt scanning flow | `ScanViewModel` (scan states, resize, OCR, parse) and `ScanView` (idle, processing, result and failed layouts) | |
 | 2026-10-16 | Claude Code | Phase 7: insights and settings | `InsightsView` (period picker, donut chart, category list, bar chart) and `SettingsView` (currency, sample data, delete all) | |
+| 2026-10-16 | Claude Code | Phase 8: tests, README and comment pass | `PerformanceTests`, `BillfoldUITests`, full `README.md`, `ScanResultCard` split out of `ScanView` to keep files short, currency reset for UI tests | |
