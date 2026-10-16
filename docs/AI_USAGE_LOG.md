@@ -11,3 +11,4 @@ Every use of an AI tool on this project is recorded here. The last column is fil
 | 2026-10-16 | Claude Code | Phase 4: theme and shared components | `Theme`, `CardStyle` (custom ViewModifier), `CategoryBadge`, `ExpenseRow`, `ScanLineOverlay` (custom animation) | |
 | 2026-10-16 | Claude Code | Phase 5: home, list and expense form | `BillfoldApp`, `RootTabView`, `HomeView`, `SummaryCard` (swipe gesture, numeric transition), `ExpenseListView`, `ExpenseFormView`, `SampleData` | |
 | 2026-10-16 | Claude Code | Phase 6: receipt scanning flow | `ScanViewModel` (scan states, resize, OCR, parse) and `ScanView` (idle, processing, result and failed layouts) | |
+| 2026-10-16 | Claude Code | Phase 7: insights and settings | `InsightsView` (period picker, donut chart, category list, bar chart) and `SettingsView` (currency, sample data, delete all) | |
