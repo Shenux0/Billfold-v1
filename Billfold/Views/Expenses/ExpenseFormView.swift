@@ -31,11 +31,6 @@ struct ExpenseFormView: View {
                 TextField("Amount", text: $draft.amountText)
                     .keyboardType(.decimalPad)
                     .accessibilityIdentifier("amountField")
-                Picker("Currency", selection: $draft.currencyCode) {
-                    ForEach(Currency.codes, id: \.self) { code in
-                        Text(code).tag(code)
-                    }
-                }
                 DatePicker("Date", selection: $draft.date, displayedComponents: .date)
             }
             Section("Category") { categoryGrid }

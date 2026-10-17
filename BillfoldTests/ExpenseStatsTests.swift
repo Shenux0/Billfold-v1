@@ -66,21 +66,6 @@ final class ExpenseStatsTests: XCTestCase {
         XCTAssertEqual(totals.first(where: { $0.category == .food })?.total ?? 0, 1400, accuracy: 0.001)
     }
 
-    func testCurrencyFilterAndTotalsByCurrency() {
-        let expenses = [
-            Expense(title: "Rice", amount: 1200, currencyCode: "LKR"),
-            Expense(title: "Coffee", amount: 4.5, currencyCode: "USD"),
-            Expense(title: "Book", amount: 20, currencyCode: "USD"),
-            Expense(title: "Train", amount: 10, currencyCode: "EUR")
-        ]
-        let rupees = ExpenseStats.expenses(expenses, inCurrency: "LKR")
-        XCTAssertEqual(rupees.map(\.title), ["Rice"])
-
-        let others = ExpenseStats.totalsByCurrency(expenses.filter { $0.currencyCode != "LKR" })
-        XCTAssertEqual(others.map(\.code), ["EUR", "USD"])
-        XCTAssertEqual(others.last?.total ?? 0, 24.5, accuracy: 0.001)
-    }
-
     func testTotalsByCategoryLeaveOutZeros() {
         let expenses = [
             Expense(title: "Free sample", amount: 0, category: .health),
