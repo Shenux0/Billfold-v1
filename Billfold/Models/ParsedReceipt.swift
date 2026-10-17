@@ -8,4 +8,5 @@ struct ParsedReceipt: Equatable {
     var merchant: String?
     var total: Double?
     var date: Date?
+    var currencyCode: String?
 }

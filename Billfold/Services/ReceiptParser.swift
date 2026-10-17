@@ -9,7 +9,8 @@ enum ReceiptParser {
         let cleaned = lines.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
         return ParsedReceipt(merchant: findMerchant(in: cleaned),
                              total: findTotal(in: cleaned),
-                             date: findDate(in: cleaned))
+                             date: findDate(in: cleaned),
+                             currencyCode: CurrencyDetector.detect(in: cleaned))
     }
 
     /// Every money amount on one line, left to right.

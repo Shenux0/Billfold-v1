@@ -11,8 +11,15 @@ struct SummaryCard: View {
     @State private var month = Date()
     @State private var movingForward = true
 
-    private var monthExpenses: [Expense] {
+    private var allThisMonth: [Expense] {
         ExpenseStats.expenses(expenses, in: .month, containing: month)
+    }
+    /// The big total only counts the main currency; other currencies are listed under it.
+    private var monthExpenses: [Expense] {
+        ExpenseStats.expenses(allThisMonth, inCurrency: currencyCode)
+    }
+    private var otherCurrencies: [Expense] {
+        allThisMonth.filter { $0.currencyCode != currencyCode }
     }
     private var total: Double { ExpenseStats.total(of: monthExpenses) }
 
@@ -59,6 +66,13 @@ struct SummaryCard: View {
                 .foregroundStyle(.secondary)
             if let top = ExpenseStats.totalsByCategory(monthExpenses).first {
                 Text("Top: \(top.category.title)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            if !otherCurrencies.isEmpty {
+                Text("Also " + ExpenseStats.totalsByCurrency(otherCurrencies)
+                    .map { $0.total.asCurrency(code: $0.code) }
+                    .joined(separator: ", "))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

@@ -13,7 +13,10 @@ struct InsightsView: View {
 
     var body: some View {
         // Work out the numbers once here and pass them down, instead of in every child view.
-        let current = ExpenseStats.expenses(expenses, in: period, containing: Date())
+        let inPeriod = ExpenseStats.expenses(expenses, in: period, containing: Date())
+        // Charts only add up the main currency; amounts in other currencies are listed below them.
+        let current = ExpenseStats.expenses(inPeriod, inCurrency: currencyCode)
+        let others = inPeriod.filter { $0.currencyCode != currencyCode }
         let totals = ExpenseStats.totalsByCategory(current)
         let total = ExpenseStats.total(of: current)
 
@@ -31,6 +34,15 @@ struct InsightsView: View {
                     donutCard(totals: totals, total: total)
                     categoryList(totals: totals, total: total)
                     barCard(current)
+                }
+
+                if !others.isEmpty {
+                    Text("Charts show \(currencyCode) only. Also spent: " + ExpenseStats.totalsByCurrency(others)
+                        .map { $0.total.asCurrency(code: $0.code) }
+                        .joined(separator: ", "))
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             .padding()

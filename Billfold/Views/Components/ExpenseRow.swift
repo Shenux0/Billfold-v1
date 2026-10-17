@@ -7,7 +7,6 @@ import SwiftUI
 struct ExpenseRow: View {
     let expense: Expense
 
-    @AppStorage("currencyCode") private var currencyCode = "LKR"
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
@@ -45,7 +44,8 @@ struct ExpenseRow: View {
     }
 
     private var amountText: some View {
-        Text(expense.amount.asCurrency(code: currencyCode))
+        // Each expense keeps the currency it was paid in.
+        Text(expense.amount.asCurrency(code: expense.currencyCode))
             .font(.body)
             .fontDesign(.rounded)
             .bold()

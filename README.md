@@ -7,7 +7,8 @@ Built for SE4041 Mobile Application Design and Development (Part A).
 ## Features
 
 - **Scan a receipt** from your photo library. Text is read on the device with Apple's Vision framework, and the photo is never uploaded.
-- **Automatic pre-fill:** merchant, total, date and a guessed category, all editable before saving.
+- **Automatic pre-fill:** merchant, total, date, currency and a guessed category, all editable before saving.
+- **Currency detection:** a receipt showing `$`, `Rs` or a written code such as `USD` is saved in that currency. Totals and charts never mix currencies: they show the main currency, and list other currencies separately.
 - **Add, edit and delete** expenses by hand. Swipe or long-press a row to delete it.
 - **Home summary** for each month. Swipe the card, or use the arrows, to move between months.
 - **Insights:** a donut chart by category and a bar chart over time, for this week, month or year.
@@ -80,6 +81,7 @@ docs/                      Development plan, AI usage log, citations
 
 - The parser assumes "." is the decimal separator (for example `1,250.00`).
 - Category guessing uses a small keyword list, and the user can always change the category.
+- `$` is assumed to mean US dollars and `Rs` Sri Lankan rupees. Amounts are never converted between currencies, because that would need live exchange rates.
 - OCR accuracy depends on the photo: crumpled, faded or dark receipts may need manual corrections.
 
 ## Credits

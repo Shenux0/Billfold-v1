@@ -13,6 +13,8 @@ final class Expense {
     var date: Date
     var categoryRaw: String
     var notes: String
+    // The default value lets SwiftData add this field to expenses saved before it existed.
+    var currencyCode: String = "LKR"
     // Photos are large, so SwiftData keeps them in separate files instead of inside the database.
     @Attribute(.externalStorage) var receiptImageData: Data?
 
@@ -23,13 +25,15 @@ final class Expense {
     }
 
     init(title: String, amount: Double, date: Date = .now,
-         category: ExpenseCategory = .other, notes: String = "", receiptImageData: Data? = nil) {
+         category: ExpenseCategory = .other, notes: String = "", currencyCode: String = "LKR",
+         receiptImageData: Data? = nil) {
         self.id = UUID()
         self.title = title
         self.amount = amount
         self.date = date
         self.categoryRaw = category.rawValue
         self.notes = notes
+        self.currencyCode = currencyCode
         self.receiptImageData = receiptImageData
     }
 }

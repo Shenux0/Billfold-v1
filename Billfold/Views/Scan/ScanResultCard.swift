@@ -13,7 +13,8 @@ struct ScanResultCard: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Found on Receipt").font(.headline)
             row("Merchant", value: parsed.merchant)
-            row("Total", value: parsed.total?.asCurrency(code: currencyCode))
+            // Use the currency printed on the receipt, or the main currency if none was found.
+            row("Total", value: parsed.total?.asCurrency(code: parsed.currencyCode ?? currencyCode))
             row("Date", value: parsed.date?.formatted(date: .abbreviated, time: .omitted))
         }
         .frame(maxWidth: .infinity, alignment: .leading)

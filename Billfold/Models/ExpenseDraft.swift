@@ -10,6 +10,7 @@ struct ExpenseDraft {
     var date = Date()
     var category: ExpenseCategory = .other
     var notes = ""
+    var currencyCode = Currency.main
     var receiptImageData: Data?
 
     /// The typed amount as a number, or nil if it is not a valid number.
@@ -37,6 +38,7 @@ struct ExpenseDraft {
         date = expense.date
         category = expense.category
         notes = expense.notes
+        currencyCode = expense.currencyCode
         receiptImageData = expense.receiptImageData
     }
 
@@ -48,6 +50,8 @@ struct ExpenseDraft {
         }
         date = parsed.date ?? Date()
         category = CategoryGuesser.guess(from: parsed.merchant)
+        // A "$" receipt is saved in dollars; with no sign on the receipt, the main currency is used.
+        currencyCode = parsed.currencyCode ?? Currency.main
         receiptImageData = imageData
     }
 
@@ -58,6 +62,7 @@ struct ExpenseDraft {
         expense.date = date
         expense.category = category
         expense.notes = notes
+        expense.currencyCode = currencyCode
         expense.receiptImageData = receiptImageData
     }
 }

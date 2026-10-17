@@ -20,6 +20,20 @@ enum ExpenseStats {
         return all.filter { interval.contains($0.date) }
     }
 
+    /// Only the expenses in one currency, so a total never adds rupees to dollars.
+    nonisolated static func expenses(_ all: [Expense], inCurrency code: String) -> [Expense] {
+        all.filter { $0.currencyCode == code }
+    }
+
+    /// One total per currency, sorted by code, for example [("EUR", 10), ("USD", 45)].
+    nonisolated static func totalsByCurrency(_ expenses: [Expense]) -> [(code: String, total: Double)] {
+        var sums: [String: Double] = [:]
+        for expense in expenses {
+            sums[expense.currencyCode, default: 0] += expense.amount
+        }
+        return sums.map { (code: $0.key, total: $0.value) }.sorted { $0.code < $1.code }
+    }
+
     nonisolated static func total(of expenses: [Expense]) -> Double {
         expenses.reduce(0) { $0 + $1.amount }
     }

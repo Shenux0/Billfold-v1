@@ -11,8 +11,6 @@ struct SettingsView: View {
     @AppStorage("currencyCode") private var currencyCode = "LKR"
     @State private var showingDeleteConfirm = false
 
-    private let currencies = ["LKR", "USD", "EUR", "GBP", "INR", "AUD"]
-
     private var version: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
     }
@@ -20,14 +18,18 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Currency") {
+                Section {
                     Picker("Currency", selection: $currencyCode) {
-                        ForEach(currencies, id: \.self) { code in
+                        ForEach(Currency.codes, id: \.self) { code in
                             Text(code).tag(code)
                         }
                     }
                     .pickerStyle(.inline)
                     .labelsHidden()
+                } header: {
+                    Text("Main Currency")
+                } footer: {
+                    Text("Used for new expenses and for totals and charts. Receipts showing another currency, such as $, are saved in that currency.")
                 }
 
                 Section {

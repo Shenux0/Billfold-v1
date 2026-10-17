@@ -60,6 +60,21 @@ final class ExpenseDraftTests: XCTestCase {
         XCTAssertEqual(draft.receiptImageData, Data([1, 2, 3]))
     }
 
+    func testDollarReceiptGivesDollarDraft() {
+        let parsed = ParsedReceipt(merchant: "Corner Cafe", total: 12.5, date: nil, currencyCode: "USD")
+        let draft = ExpenseDraft(parsed: parsed, imageData: nil)
+        XCTAssertEqual(draft.currencyCode, "USD")
+
+        let expense = Expense(title: "", amount: 0)
+        draft.apply(to: expense)
+        XCTAssertEqual(expense.currencyCode, "USD")
+    }
+
+    func testReceiptWithoutCurrencyUsesMainCurrency() {
+        let draft = ExpenseDraft(parsed: ParsedReceipt(merchant: "Shop", total: 100), imageData: nil)
+        XCTAssertEqual(draft.currencyCode, Currency.main)
+    }
+
     func testInitFromEmptyParsedReceipt() {
         let draft = ExpenseDraft(parsed: ParsedReceipt(), imageData: nil)
         XCTAssertEqual(draft.title, "")
