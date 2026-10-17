@@ -49,6 +49,21 @@ final class ReceiptScannerTests: XCTestCase {
         XCTAssertEqual(ReceiptParser.parse(lines: lines).total, 450.00)
     }
 
+    func testPiecesOnTheSameRowAreJoinedTopToBottom() {
+        // Vision order is scrambled on purpose: amounts first, labels after, like a real receipt.
+        // Remember Vision's y runs upwards, so a bigger y is higher on the page.
+        let pieces = [
+            ReceiptScanner.TextPiece(text: "1,250.00", box: CGRect(x: 0.7, y: 0.30, width: 0.2, height: 0.04)),
+            ReceiptScanner.TextPiece(text: "450.00", box: CGRect(x: 0.7, y: 0.50, width: 0.2, height: 0.04)),
+            ReceiptScanner.TextPiece(text: "KEELLS", box: CGRect(x: 0.3, y: 0.80, width: 0.4, height: 0.05)),
+            ReceiptScanner.TextPiece(text: "TOTAL", box: CGRect(x: 0.1, y: 0.31, width: 0.2, height: 0.04)),
+            ReceiptScanner.TextPiece(text: "Milk", box: CGRect(x: 0.1, y: 0.49, width: 0.2, height: 0.04))
+        ]
+        let lines = ReceiptScanner.buildLines(from: pieces)
+        XCTAssertEqual(lines, ["KEELLS", "Milk 450.00", "TOTAL 1,250.00"])
+        XCTAssertEqual(ReceiptParser.parse(lines: lines).total, 1250.00)
+    }
+
     func testResizeShrinksLongestSideAndKeepsShape() {
         let image = makeReceiptImage(lines: Array(repeating: "LINE", count: 30)) // 800 x 3680
         let small = image.resized(maxDimension: 1600)

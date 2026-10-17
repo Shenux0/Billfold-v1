@@ -55,6 +55,10 @@ final class ScanViewModel {
 
         do {
             let lines = try await ReceiptScanner.recognizeText(in: prepared.0)
+            #if DEBUG
+            // Shows in Xcode's console exactly what Vision read, to see why a receipt parsed wrongly.
+            print("Billfold OCR lines:\n" + lines.joined(separator: "\n"))
+            #endif
             if lines.isEmpty {
                 state = .failed("No text was found. Try a sharper, well-lit photo of the receipt.")
             } else {

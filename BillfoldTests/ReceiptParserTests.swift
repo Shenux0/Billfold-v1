@@ -40,6 +40,16 @@ final class ReceiptParserTests: XCTestCase {
         XCTAssertEqual(ReceiptParser.parse(lines: lines).total, 99.50)
     }
 
+    func testNetAmountCountsAsTotal() {
+        let lines = ["Shop", "Item 900.00", "Cash 2,000.00", "NET AMOUNT 950.00"]
+        XCTAssertEqual(ReceiptParser.parse(lines: lines).total, 950.00)
+    }
+
+    func testJoinsStraySpaceAroundDecimalPoint() {
+        XCTAssertEqual(ReceiptParser.amounts(in: "TOTAL 1,250. 00"), [1250.00])
+        XCTAssertEqual(ReceiptParser.amounts(in: "Items 3, 450.00"), [450.00])
+    }
+
     func testIgnoresDottedDatesAndReadsRupeePrefix() {
         XCTAssertEqual(ReceiptParser.amounts(in: "12.10.2025"), [])
         XCTAssertEqual(ReceiptParser.amounts(in: "Rs.450.00"), [450.00])
@@ -71,6 +81,24 @@ final class ReceiptParserTests: XCTestCase {
         XCTAssertEqual(parts.year, 2025)
         XCTAssertEqual(parts.month, 10)
         XCTAssertEqual(parts.day, 12)
+    }
+
+    func testNumericDateIsReadDayFirst() throws {
+        let lines = ["Shop", "05/10/2025 14:32", "Total 100.00"]
+        let date = try XCTUnwrap(ReceiptParser.parse(lines: lines).date)
+        let parts = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        XCTAssertEqual(parts.day, 5)
+        XCTAssertEqual(parts.month, 10)
+        XCTAssertEqual(parts.year, 2025)
+    }
+
+    func testTwoDigitYear() throws {
+        let lines = ["Shop", "Date: 17-03-25", "Total 100.00"]
+        let date = try XCTUnwrap(ReceiptParser.parse(lines: lines).date)
+        let parts = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        XCTAssertEqual(parts.day, 17)
+        XCTAssertEqual(parts.month, 3)
+        XCTAssertEqual(parts.year, 2025)
     }
 
     func testIgnoresFutureDate() {
